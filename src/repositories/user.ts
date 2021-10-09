@@ -2,7 +2,7 @@ import { CustomError } from '@src/errors/customError';
 import { InternalError } from '@src/errors/internalError';
 import { InsertUserError } from '@src/errors/repositories/user/insertUserError';
 import { User, UserData, UserModel } from '@src/models/user';
-import { logger } from '@src/util/logger';
+import { log } from '@src/util/logger';
 
 export class UserRepository {
     constructor(public readonly model: typeof User = User) {}
@@ -17,7 +17,7 @@ export class UserRepository {
             return user.save();
         } catch (error) {
             if (error instanceof CustomError) throw error;
-            error instanceof Error && logger.error(error as any);
+            log.error(error);
             throw new InternalError('Erro ao salvar o usuário!');
         }
     }

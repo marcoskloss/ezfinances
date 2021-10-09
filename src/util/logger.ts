@@ -1,9 +1,14 @@
 import pino from 'pino';
 
-const logger = pino({
+const pinoLogger = pino({
     prettyPrint: {
         ignore: 'pid, hostname',
     },
 });
 
-export { logger };
+const log = {
+    error: (err: any): void => pinoLogger.error(err),
+    info: (info: any): void => pinoLogger.info(info),
+};
+
+export { log };
