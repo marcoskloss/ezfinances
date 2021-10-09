@@ -14,7 +14,7 @@
         "test": "jest --runInBand",
         "test:watch": "jest --watch --runInBand",
         "test:cov": "jest --no-cache --runInBand --coverage",
-        "pre-commit": "echo \"PRE\""
+        "pre-commit": "lint-staged"
     },
     "devDependencies": {
         "@types/bcrypt": "^5.0.0",
