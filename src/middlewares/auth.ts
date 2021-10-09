@@ -1,21 +1,13 @@
 import { CustomError } from '@src/errors/customError';
 import { AuthorizationError } from '@src/errors/middlewares/authorizationError';
 import { AuthService } from '@src/services/auth';
-import {
-    httpInternalErrorResponse,
-    httpResponse,
-    Request,
-} from '@src/util/http';
-import { NextFunction, Response as ExpressResponse } from 'express';
+import { Request } from '@src/util/http';
+import { log } from '@src/util/logger';
 import { Middleware } from './contract';
 
 export class AuthMiddleware implements Middleware {
-    async exec(
-        req: Request,
-        res: ExpressResponse,
-        next: NextFunction
-    ): Promise<ExpressResponse | void> {
-        const authHeader = req.headers['authorization'];
+    async exec(req: Request): Promise<void> {
+        const authHeader = req.headers?.['authorization'];
 
         if (!authHeader) {
             throw new AuthorizationError('Sem autorização!');
@@ -23,24 +15,20 @@ export class AuthMiddleware implements Middleware {
 
         const token = authHeader.split(' ')[1];
 
-        if (!authHeader) {
+        if (!token) {
             throw new AuthorizationError('Sem autorização!');
         }
 
         try {
             const decoded = AuthService.decodeToken(token);
             req.user_decoded = { ...decoded };
-            return next();
         } catch (error) {
             if (error instanceof CustomError) {
-                return httpResponse({
-                    response: res,
-                    status: error.code,
-                    error: error.message,
-                });
+                throw error;
             }
 
-            return httpInternalErrorResponse(res);
+            log.error(error);
+            throw new AuthorizationError('Token informado inválido!');
         }
     }
 }
