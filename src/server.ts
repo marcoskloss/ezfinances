@@ -15,6 +15,7 @@ export class Server {
     public async init(): Promise<void> {
         this.setupExpress();
         await this.initDatabaseConnection();
+        this.setupErrorHandler();
     }
 
     public start(): void {
@@ -26,8 +27,10 @@ export class Server {
     private setupExpress(): void {
         this.app.use(express.json());
         this.app.use(cors({ origin: process.env.UI_ORIGIN }));
-
         this.app.use(this.routes);
+    }
+
+    private setupErrorHandler(): void {
         this.app.use(this.handleErrors);
     }
 
