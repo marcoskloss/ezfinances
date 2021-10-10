@@ -22,6 +22,7 @@ export function httpResponse({
 
     return response.status(status).json({
         error: error,
+        status,
         ...responseData,
     });
 }

@@ -1,7 +1,9 @@
 import * as database from '@src/database';
-import express, { Express, Router } from 'express';
+import express, { Express, Request, Response, Router } from 'express';
 import cors from 'cors';
 import { log } from './util/logger';
+import { handleCustomError } from './controllers/handleCustomError';
+import { httpResponse } from './util/http';
 
 export class Server {
     constructor(
@@ -26,6 +28,15 @@ export class Server {
         this.app.use(cors({ origin: process.env.UI_ORIGIN }));
 
         this.app.use(this.routes);
+        this.app.use(this.handleErrors);
+    }
+
+    private handleErrors(error: Error, _: Request, res: Response): Response {
+        const errorData = handleCustomError(error);
+        return httpResponse({
+            response: res,
+            ...errorData,
+        });
     }
 
     public async initDatabaseConnection(): Promise<void> {

@@ -3,8 +3,10 @@ import { AuthService } from '@src/services/auth';
 import { UserRepository } from '@src/repositories/user';
 import { User, UserModel } from '@src/models/user';
 import { InsertUserError } from '@src/errors/repositories/user/insertUserError';
+import { log } from '@src/util/logger';
 
 jest.mock('@src/models/user');
+beforeAll(() => jest.spyOn(log, 'error').mockImplementation());
 
 describe('CreateUserController', () => {
     const user = {

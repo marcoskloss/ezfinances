@@ -2,8 +2,10 @@ import { AuthenticateUserController } from '@src/controllers/user/authenticateUs
 import { User } from '@src/models/user';
 import { UserRepository } from '@src/repositories/user';
 import { AuthService } from '@src/services/auth';
+import { log } from '@src/util/logger';
 
 jest.mock('@src/models/user');
+beforeAll(() => jest.spyOn(log, 'error').mockImplementation());
 
 describe('AuthenticateUserController', () => {
     const user = {

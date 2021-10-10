@@ -3,9 +3,8 @@ import { AuthService, TokenPayload } from '@src/services/auth';
 import { log } from '@src/util/logger';
 import { AuthMiddleware } from '../auth';
 
+beforeAll(() => jest.spyOn(log, 'error').mockImplementation());
 describe('AuthMiddleware', () => {
-    beforeEach(() => jest.spyOn(log, 'error').mockImplementation());
-
     const request: any = {
         headers: { authorization: 'Bearer ccess-token' },
     };

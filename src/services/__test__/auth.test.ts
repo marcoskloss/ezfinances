@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
 import { AuthService } from '../auth';
 import jwt from 'jsonwebtoken';
+import { log } from '@src/util/logger';
+beforeAll(() => jest.spyOn(log, 'error').mockImplementation());
 
 describe('AuthService', () => {
     test('hashPassword', async () => {

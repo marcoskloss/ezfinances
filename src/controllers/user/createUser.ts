@@ -1,4 +1,5 @@
-import { INTERNAL_ERROR_MESSAGE } from '@src/errors/internalError';
+import { AppError } from '@src/errors/appError';
+import { InternalError } from '@src/errors/internalError';
 import { UserData } from '@src/models/user';
 import { UserRepository } from '@src/repositories/user';
 import { AuthService } from '@src/services/auth';
@@ -20,10 +21,7 @@ export class CreateUserController implements Controller {
             });
 
             if (userAlreadyExists) {
-                return {
-                    error: 'Usuário já cadastrado!',
-                    status: 409,
-                };
+                throw new AppError('Usuário já cadastrado!', 409);
             }
 
             const hashedPassword = await AuthService.hashPassword(password);
@@ -34,10 +32,7 @@ export class CreateUserController implements Controller {
             });
 
             if (!user) {
-                return {
-                    error: INTERNAL_ERROR_MESSAGE,
-                    status: 500,
-                };
+                throw new InternalError();
             }
 
             return {
