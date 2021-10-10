@@ -1,19 +1,17 @@
 import * as http from 'http';
 import * as database from '@src/database';
-import express, { Express, Request, Response, Router } from 'express';
+import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import { log } from './util/logger';
 import { handleCustomError } from './controllers/handleCustomError';
 import { httpResponse } from './util/http';
+import { routes } from '@src/routes';
 
 export class Server {
-    constructor(
-        private app: Express,
-        private routes: Router,
-        private port = 3333
-    ) {}
+    constructor(private port = 3333) {}
 
     private server?: http.Server;
+    private app: Express = express();
 
     public async init(): Promise<void> {
         this.setupExpress();
@@ -30,7 +28,7 @@ export class Server {
     private setupExpress(): void {
         this.app.use(express.json());
         this.app.use(cors({ origin: process.env.UI_ORIGIN }));
-        this.app.use(this.routes);
+        this.app.use(routes);
     }
 
     private setupErrorHandler(): void {
