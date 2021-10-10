@@ -1,3 +1,4 @@
+import * as http from 'http';
 import * as database from '@src/database';
 import express, { Express, Request, Response, Router } from 'express';
 import cors from 'cors';
@@ -12,6 +13,8 @@ export class Server {
         private port = 3333
     ) {}
 
+    private server?: http.Server;
+
     public async init(): Promise<void> {
         this.setupExpress();
         await this.initDatabaseConnection();
@@ -19,7 +22,7 @@ export class Server {
     }
 
     public start(): void {
-        this.app.listen(this.port, () => {
+        this.server = this.app.listen(this.port, () => {
             log.info(`Server listening on port ${this.port}`);
         });
     }
@@ -46,7 +49,17 @@ export class Server {
         await database.connect();
     }
 
-    public async closeDatabaseConnection(): Promise<void> {
+    public async close(): Promise<void> {
         await database.close();
+        if (this.server) {
+            await new Promise((resolve, reject) => {
+                this.server?.close((err) => {
+                    if (err) {
+                        reject(err);
+                    }
+                    resolve(true);
+                });
+            });
+        }
     }
 }
