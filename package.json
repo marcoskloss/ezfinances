@@ -11,9 +11,11 @@
         "start": "yarn build && node dist/src/index.js",
         "lint": "eslint ./src ./test --ext .ts",
         "lint:fix": "eslint ./src ./test --ext .ts --fix",
-        "test": "jest --runInBand",
+        "test": "yarn test:unit && yarn test:functional",
         "test:watch": "jest --watch --runInBand",
         "test:cov": "jest --no-cache --runInBand --coverage",
+        "test:unit": "jest",
+        "test:functional": "jest --projects ./test --runInBand",
         "pre-commit": "lint-staged"
     },
     "devDependencies": {
