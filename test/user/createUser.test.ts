@@ -2,7 +2,7 @@ import { User } from '@src/models/user';
 import { Methods, doRequest } from '../util/doRequest';
 
 describe('/users/create', () => {
-    afterEach(async () => {
+    beforeEach(async () => {
         await User.deleteMany({});
     });
 
@@ -19,7 +19,10 @@ describe('/users/create', () => {
             };
 
             const response = await doRequest('/users/create', body, options);
+
+            const user = await User.findOne({ email: body.email });
             expect(response.status).toBe(201);
+            expect(user).toBeTruthy();
         });
     });
 });
