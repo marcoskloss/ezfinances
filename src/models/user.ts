@@ -1,3 +1,5 @@
+import { AuthService } from '@src/services/auth';
+import { log } from '@src/util/logger';
 import mongoose, { Document, Model } from 'mongoose';
 
 export interface UserData {
@@ -29,5 +31,16 @@ const schema = new mongoose.Schema(
         },
     }
 );
+
+schema.pre<UserModel>('save', async function (): Promise<void> {
+    if (!this.password && !this.isModified('password')) return;
+
+    try {
+        const hashedPassword = await AuthService.hashPassword(this.password);
+        this.password = hashedPassword;
+    } catch (error) {
+        log.error(`Error when hashing the password for user ${this.name}`);
+    }
+});
 
 export const User: Model<UserModel> = mongoose.model('User', schema);

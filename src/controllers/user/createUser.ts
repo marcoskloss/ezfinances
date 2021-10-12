@@ -24,11 +24,10 @@ export class CreateUserController implements Controller {
                 throw new AppError('Usuário já cadastrado!', 409);
             }
 
-            const hashedPassword = await AuthService.hashPassword(password);
             const user = await this.userRepository.insert({
                 email,
                 name,
-                password: hashedPassword,
+                password,
             });
 
             if (!user) {
