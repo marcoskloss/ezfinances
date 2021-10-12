@@ -2,7 +2,6 @@ import { AppError } from '@src/errors/appError';
 import { InternalError } from '@src/errors/internalError';
 import { UserData } from '@src/models/user';
 import { UserRepository } from '@src/repositories/user';
-import { AuthService } from '@src/services/auth';
 import { Request, Response } from '@src/util/http';
 import { Controller } from '../contract';
 import { handleCustomError } from '../handleCustomError';
