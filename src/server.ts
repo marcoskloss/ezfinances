@@ -1,6 +1,6 @@
 import * as http from 'http';
 import * as database from '@src/database';
-import express, { Express, Request, Response } from 'express';
+import express, { Express, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import { log } from './util/logger';
 import { handleCustomError } from './controllers/handleCustomError';
@@ -28,6 +28,9 @@ export class Server {
     private setupExpress(): void {
         this.app.use(express.json());
         this.app.use(cors({ origin: process.env.UI_ORIGIN }));
+
+        this.app.use(this.routeLogger);
+
         this.app.use(routes);
     }
 
@@ -41,6 +44,22 @@ export class Server {
             response: res,
             ...errorData,
         });
+    }
+
+    private routeLogger(req: Request, res: Response, next: NextFunction): void {
+        const { ip, method, url } = req;
+
+        const msg = `[${ip}] - ${method} - Receiving request ${url}`;
+
+        log.info(msg);
+
+        res.on('finish', () => {
+            log.info(
+                `[${ip}] - ${method} - Response finished ${url} with status code ${res.statusCode}`
+            );
+        });
+
+        next();
     }
 
     public async initDatabaseConnection(): Promise<void> {
