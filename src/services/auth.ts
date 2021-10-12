@@ -27,7 +27,7 @@ export class AuthService {
             { email: user.email, name: user.name, id: user.id },
             process.env.AUTH_KEY,
             {
-                subject: user.id,
+                subject: String(user.id),
                 expiresIn: '1d',
             }
         );
