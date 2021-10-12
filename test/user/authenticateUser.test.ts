@@ -33,5 +33,23 @@ describe('/users/authenticate', () => {
                 expect.objectContaining({ token: expect.any(String) })
             );
         });
+
+        it('should return 403 if the user with the given email is not found', async () => {
+            const options = {
+                method: Methods.post,
+            };
+            const body = {
+                email: 'some-email@mail.com',
+                password: userData.password,
+            };
+
+            const response = await doRequest(
+                '/users/authenticate',
+                body,
+                options
+            );
+
+            expect(response.status).toBe(403);
+        });
     });
 });
