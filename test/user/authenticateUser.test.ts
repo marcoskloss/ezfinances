@@ -51,5 +51,24 @@ describe('/users/authenticate', () => {
 
             expect(response.status).toBe(403);
         });
+
+        it('should return 403 if user is found but the password does not match', async () => {
+            await new User(userData).save();
+            const options = {
+                method: Methods.post,
+            };
+            const body = {
+                email: userData.email,
+                password: 'invalid-password',
+            };
+
+            const response = await doRequest(
+                '/users/authenticate',
+                body,
+                options
+            );
+
+            expect(response.status).toBe(403);
+        });
     });
 });
