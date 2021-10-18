@@ -1,5 +1,5 @@
 import { User } from '@src/models/user';
-import { Methods, doRequest } from '../util/doRequest';
+import { Methods, doRequest } from '../../util/doRequest';
 
 describe('/users/authenticate', () => {
     beforeEach(async () => {

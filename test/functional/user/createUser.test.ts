@@ -1,6 +1,6 @@
 import { User } from '@src/models/user';
 import { AuthService } from '@src/services/auth';
-import { Methods, doRequest } from '../util/doRequest';
+import { Methods, doRequest } from '../../util/doRequest';
 
 describe('/users/create', () => {
     beforeEach(async () => {
