@@ -39,7 +39,7 @@ export interface Request<T = any> extends ExpressRequest {
 }
 
 export type Response<T = any> = {
-    status: number;
+    status?: number;
     data?: T;
     error?: string;
 };

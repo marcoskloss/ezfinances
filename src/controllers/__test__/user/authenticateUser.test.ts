@@ -60,9 +60,9 @@ describe('AuthenticateUserController', () => {
                 userRepository
             );
 
-            const response = await authenticateUserController.handle(request);
-            expect(response.status).toBe(403);
-            expect(response.error).toBe('Email/Password inválido!');
+            await expect(
+                authenticateUserController.handle(request)
+            ).rejects.toMatchObject({ code: 403 });
         });
 
         test('given invalid password it should return 403', async () => {
@@ -75,23 +75,9 @@ describe('AuthenticateUserController', () => {
 
             jest.spyOn(AuthService, 'comparePassword').mockResolvedValue(false);
 
-            const response = await authenticateUserController.handle(request);
-            expect(response.status).toBe(403);
-            expect(response.error).toBe('Email/Password inválido!');
+            await expect(
+                authenticateUserController.handle(request)
+            ).rejects.toMatchObject({ code: 403 });
         });
-    });
-
-    test('when some unhandled error occurs it should return 500', async () => {
-        mockedUserModel.findOne.mockRejectedValueOnce(
-            new Error('unhandled error!')
-        );
-
-        const userRepository = new UserRepository(mockedUserModel);
-        const authenticateUserController = new AuthenticateUserController(
-            userRepository
-        );
-
-        const response = await authenticateUserController.handle(request);
-        expect(response.status).toBe(500);
     });
 });

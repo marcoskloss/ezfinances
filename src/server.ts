@@ -43,6 +43,7 @@ export class Server {
         return httpResponse({
             response: res,
             ...errorData,
+            status: errorData.status ?? 500,
         });
     }
 
