@@ -10,7 +10,7 @@ export class GetUserProfileController implements Controller {
 
     async handle(req: Request): Promise<Response> {
         const id = req.user_decoded?.id;
-        const user = await this.userRepository.model.findById(id);
+        const user = await this.userRepository.model.findById(id, '-password');
 
         if (!user) {
             throw new AppError('Usuário não encontrado!', 404);

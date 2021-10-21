@@ -4,6 +4,8 @@ import { AuthenticateUserController } from '@src/controllers/user/authenticateUs
 import { adaptController } from '@src/controllers/adaptController';
 import { adaptMiddleware } from '@src/middlewares/adaptMiddleware';
 import { CreateUserValidator } from '@src/middlewares/validators/user/createUserValidator';
+import { AuthMiddleware } from '@src/middlewares/auth';
+import { GetUserProfileController } from '@src/controllers/user/getUserProfile';
 
 const userRoute = Router();
 
@@ -15,6 +17,12 @@ userRoute.post(
 userRoute.post(
     '/authenticate',
     adaptController(new AuthenticateUserController())
+);
+
+userRoute.get(
+    '/me',
+    adaptMiddleware(new AuthMiddleware()),
+    adaptController(new GetUserProfileController())
 );
 
 export { userRoute };
