@@ -5,11 +5,14 @@ async function doRequest(url: string, body?: any, opts?: any): Promise<any> {
     const route = `http://localhost:${process.env.APP_PORT}${url}`;
     const bodyData = JSON.stringify(body);
 
+    const { headers, ...restOpts } = opts;
+
     const options = {
-        ...opts,
+        ...restOpts,
         headers: {
             'Content-Type': 'application/json',
             'Content-Length': body ? Buffer.byteLength(bodyData) : 0,
+            ...headers,
         },
     };
 
