@@ -31,9 +31,15 @@ export class CreateUserController implements Controller {
             throw new InternalError();
         }
 
+        const userData = user.toJSON();
+
         return {
             status: 201,
-            data: user.toJSON(),
+            data: {
+                name: userData.name,
+                email: userData.email,
+                id: userData.id,
+            },
         };
     }
 }
