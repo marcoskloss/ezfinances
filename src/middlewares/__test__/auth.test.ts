@@ -9,7 +9,7 @@ describe('AuthMiddleware', () => {
         headers: { authorization: 'Bearer ccess-token' },
     };
 
-    test('if no access token is provided it should throw a authorization error', async () => {
+    test('if no access token is provided it should throw an authorization error', async () => {
         const authMiddleware = new AuthMiddleware();
 
         const req: any = {
@@ -22,7 +22,20 @@ describe('AuthMiddleware', () => {
         );
     });
 
-    test('if invalid token is provided it should throw a authorization error', async () => {
+    test('if no authorization header is provided it should throw an authorization error', async () => {
+        const authMiddleware = new AuthMiddleware();
+
+        const req: any = {
+            ...request,
+            headers: {},
+        };
+
+        await expect(authMiddleware.exec(req)).rejects.toThrow(
+            AuthorizationError
+        );
+    });
+
+    test('if invalid token is provided it should throw an authorization error', async () => {
         const authMiddleware = new AuthMiddleware();
         const req: any = {
             ...request,
@@ -32,6 +45,21 @@ describe('AuthMiddleware', () => {
         jest.spyOn(AuthService, 'decodeToken').mockImplementationOnce(() => {
             throw Error();
         });
+
+        await expect(authMiddleware.exec(req)).rejects.toThrow(
+            AuthorizationError
+        );
+    });
+
+    test('if authorizatoin header is empty it should throw an authorization error', async () => {
+        const authMiddleware = new AuthMiddleware();
+
+        const req: any = {
+            ...request,
+            headers: {
+                authorization: '',
+            },
+        };
 
         await expect(authMiddleware.exec(req)).rejects.toThrow(
             AuthorizationError
