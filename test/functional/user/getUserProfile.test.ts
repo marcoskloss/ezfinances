@@ -32,4 +32,47 @@ describe('/users/me', () => {
         expect(response.email).toBe(user.email);
         expect(response.id).toBe(user.id);
     });
+
+    test('if authorization header is invalid it should return 401', async () => {
+        await new User({ ...userData }).save();
+
+        const options = {
+            method: Methods.get,
+            headers: {
+                Authorization: `Bearer`,
+            },
+        };
+
+        const response = await doRequest('/users/me', {}, options);
+
+        expect(response.status).toBe(401);
+    });
+
+    test('if authorization header is not provided it should return 401', async () => {
+        await new User({ ...userData }).save();
+
+        const options = {
+            method: Methods.get,
+            headers: {},
+        };
+
+        const response = await doRequest('/users/me', {}, options);
+
+        expect(response.status).toBe(401);
+    });
+
+    test('if authorization header is empty it should return 401', async () => {
+        await new User({ ...userData }).save();
+
+        const options = {
+            method: Methods.get,
+            headers: {
+                authorization: '',
+            },
+        };
+
+        const response = await doRequest('/users/me', {}, options);
+
+        expect(response.status).toBe(401);
+    });
 });
