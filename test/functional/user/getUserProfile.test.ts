@@ -16,7 +16,7 @@ describe('/users/me', () => {
     afterAll(async () => User.deleteMany({}));
     test("given a token it should return the token's owner information", async () => {
         const user = await new User({ ...userData }).save();
-        const token = AuthService.generateToken(user.toJSON());
+        const token = AuthService.generateToken(user.id);
 
         const options = {
             method: Methods.get,

@@ -46,7 +46,7 @@ describe('AuthenticateUserController', () => {
         expect(userRepository.model.findOne).toBeCalledWith({
             email: user.email,
         });
-        expect(generateTokenSpy).toBeCalledWith(user);
+        expect(generateTokenSpy).toBeCalledWith(user.id);
         expect(response.status).toBe(200);
         expect(response.data.token).toBe('access-token');
     });

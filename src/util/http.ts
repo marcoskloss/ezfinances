@@ -1,5 +1,4 @@
 import { INTERNAL_ERROR_MESSAGE } from '@src/errors/internalError';
-import { TokenPayload } from '@src/services/auth';
 import {
     Response as ExpressResponse,
     Request as ExpressRequest,
@@ -35,7 +34,7 @@ export function httpInternalErrorResponse(
 
 export interface Request<T = any> extends ExpressRequest {
     body: T;
-    user_decoded?: TokenPayload;
+    userId?: string;
 }
 
 export type Response<T = any> = {

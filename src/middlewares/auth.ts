@@ -20,8 +20,9 @@ export class AuthMiddleware implements Middleware {
         }
 
         try {
-            const decoded = AuthService.decodeToken(token);
-            req.user_decoded = { ...decoded };
+            const decodedToken = AuthService.decodeToken(token);
+
+            req.userId = decodedToken.sub;
         } catch (error) {
             if (error instanceof CustomError) {
                 throw error;

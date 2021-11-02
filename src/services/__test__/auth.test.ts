@@ -43,16 +43,15 @@ describe('AuthService', () => {
     test('generateToken', () => {
         const signSpy = jest.spyOn(jwt, 'sign');
 
-        const user = {
-            email: 'user@mail.com',
-            name: 'username',
-            id: 'user-id',
-        };
+        const userId = 'user-id';
 
-        AuthService.generateToken(user);
-        expect(signSpy).toHaveBeenCalledWith({ ...user }, 'very-secret-key', {
-            subject: user.id,
-            expiresIn: '1d',
-        });
+        AuthService.generateToken(userId);
+        expect(signSpy).toHaveBeenCalledWith(
+            { sub: userId },
+            'very-secret-key',
+            {
+                expiresIn: '1d',
+            }
+        );
     });
 });

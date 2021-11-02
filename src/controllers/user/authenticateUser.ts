@@ -31,7 +31,7 @@ export class AuthenticateUserController implements Controller {
             throw new AuthenticateUserError('Email/Password inválido!', 403);
         }
 
-        const token = AuthService.generateToken(user.toJSON());
+        const token = AuthService.generateToken(user.id);
 
         return { status: 200, data: { token, user } };
     }

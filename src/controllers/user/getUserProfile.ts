@@ -9,7 +9,7 @@ export class GetUserProfileController implements Controller {
     ) {}
 
     async handle(req: Request): Promise<Response> {
-        const id = req.user_decoded?.id;
+        const id = req.userId;
         const user = await this.userRepository.model.findById(id, '-password');
 
         if (!user) {

@@ -70,9 +70,7 @@ describe('AuthMiddleware', () => {
         const authMiddleware = new AuthMiddleware();
 
         const payload: TokenPayload = {
-            email: 'foo@mail.com',
-            id: 'some-id',
-            name: 'Jorge',
+            sub: 'some-id',
         };
 
         jest.spyOn(AuthService, 'decodeToken').mockReturnValueOnce(payload);

@@ -2,9 +2,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 export type TokenPayload = {
-    id: string;
-    email: string;
-    name: string;
+    sub: string;
 };
 
 export class AuthService {
@@ -22,15 +20,10 @@ export class AuthService {
         return bcrypt.compare(password, hashedPassowrd);
     }
 
-    public static generateToken(user: Record<string, any>): string {
-        return jwt.sign(
-            { email: user.email, name: user.name, id: user.id },
-            process.env.AUTH_KEY,
-            {
-                subject: String(user.id),
-                expiresIn: '1d',
-            }
-        );
+    public static generateToken(id: string): string {
+        return jwt.sign({ sub: id }, process.env.AUTH_KEY, {
+            expiresIn: '1d',
+        });
     }
 
     public static decodeToken(token: string): TokenPayload {
