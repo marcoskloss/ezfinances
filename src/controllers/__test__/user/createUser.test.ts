@@ -1,7 +1,7 @@
+import { AppError } from '@src/errors/appError';
 import { CreateUserController } from '@src/controllers/user/createUser';
 import { UserRepository } from '@src/repositories/user';
 import { User, UserModel } from '@src/models/user';
-import { InsertUserError } from '@src/errors/repositories/user/insertUserError';
 import { log } from '@src/util/logger';
 
 jest.mock('@src/models/user');
@@ -63,7 +63,7 @@ describe('CreateUserController', () => {
     test('when insert throw a custom error it should return error message and error status code', async () => {
         const createUserController = new CreateUserController(userRepository);
         jest.spyOn(userRepository, 'insert').mockRejectedValue(
-            new InsertUserError('error-message', 409)
+            new AppError('error-message', 409)
         );
 
         await expect(

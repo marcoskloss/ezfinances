@@ -1,5 +1,4 @@
-import { CustomError } from '@src/errors/customError';
-import { AuthorizationError } from '@src/errors/middlewares/authorizationError';
+import { AppError } from '@src/errors/appError';
 import { AuthService } from '@src/services/auth';
 import { Request } from '@src/util/http';
 import { log } from '@src/util/logger';
@@ -10,13 +9,13 @@ export class AuthMiddleware implements Middleware {
         const authHeader = req.headers?.['authorization'];
 
         if (!authHeader) {
-            throw new AuthorizationError('Sem autorização!');
+            throw new AppError('Sem autorização!', 401);
         }
 
         const token = authHeader.split(' ')[1];
 
         if (!token) {
-            throw new AuthorizationError('Sem autorização!');
+            throw new AppError('Sem autorização!', 401);
         }
 
         try {
@@ -24,12 +23,12 @@ export class AuthMiddleware implements Middleware {
 
             req.userId = decodedToken.sub;
         } catch (error) {
-            if (error instanceof CustomError) {
+            if (error instanceof AppError) {
                 throw error;
             }
 
             log.error(error);
-            throw new AuthorizationError('Token informado inválido!');
+            throw new AppError('Token informado inválido!', 401);
         }
     }
 }

@@ -1,4 +1,4 @@
-import { AuthenticateUserError } from '@src/errors/repositories/user/authenticateUserError';
+import { AppError } from '@src/errors/appError';
 import { UserRepository } from '@src/repositories/user';
 import { AuthService } from '@src/services/auth';
 import { Request, Response } from '@src/util/http';
@@ -20,7 +20,7 @@ export class AuthenticateUserController implements Controller {
         const user = await this.userRepository.model.findOne({ email });
 
         if (!user) {
-            throw new AuthenticateUserError('Email/Password inválido!', 403);
+            throw new AppError('Email/Password inválido!', 403);
         }
 
         const passwordMatch = await AuthService.comparePassword(
@@ -28,7 +28,7 @@ export class AuthenticateUserController implements Controller {
             user.password
         );
         if (!passwordMatch) {
-            throw new AuthenticateUserError('Email/Password inválido!', 403);
+            throw new AppError('Email/Password inválido!', 403);
         }
 
         const token = AuthService.generateToken(user.id);

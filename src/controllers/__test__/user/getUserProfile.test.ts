@@ -1,5 +1,4 @@
 import { GetUserProfileController } from '@src/controllers/user/getUserProfile';
-import { AppError } from '@src/errors/appError';
 import { User } from '@src/models/user';
 import { UserRepository } from '@src/repositories/user';
 

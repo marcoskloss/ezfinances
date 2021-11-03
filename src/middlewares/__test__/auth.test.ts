@@ -1,4 +1,4 @@
-import { AuthorizationError } from '@src/errors/middlewares/authorizationError';
+import { AppError } from '@src/errors/appError';
 import { AuthService, TokenPayload } from '@src/services/auth';
 import { log } from '@src/util/logger';
 import { AuthMiddleware } from '../auth';
@@ -17,9 +17,7 @@ describe('AuthMiddleware', () => {
             headers: { authorization: 'Bearer' },
         };
 
-        await expect(authMiddleware.exec(req)).rejects.toThrow(
-            AuthorizationError
-        );
+        await expect(authMiddleware.exec(req)).rejects.toThrow(AppError);
     });
 
     test('if no authorization header is provided it should throw an authorization error', async () => {
@@ -30,9 +28,7 @@ describe('AuthMiddleware', () => {
             headers: {},
         };
 
-        await expect(authMiddleware.exec(req)).rejects.toThrow(
-            AuthorizationError
-        );
+        await expect(authMiddleware.exec(req)).rejects.toThrow(AppError);
     });
 
     test('if invalid token is provided it should throw an authorization error', async () => {
@@ -46,9 +42,7 @@ describe('AuthMiddleware', () => {
             throw Error();
         });
 
-        await expect(authMiddleware.exec(req)).rejects.toThrow(
-            AuthorizationError
-        );
+        await expect(authMiddleware.exec(req)).rejects.toThrow(AppError);
     });
 
     test('if authorizatoin header is empty it should throw an authorization error', async () => {
@@ -61,9 +55,7 @@ describe('AuthMiddleware', () => {
             },
         };
 
-        await expect(authMiddleware.exec(req)).rejects.toThrow(
-            AuthorizationError
-        );
+        await expect(authMiddleware.exec(req)).rejects.toThrow(AppError);
     });
 
     test('if valid token is provided it should not throw', async () => {

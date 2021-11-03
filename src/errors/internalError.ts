@@ -1,9 +1,8 @@
-import { CustomError } from './customError';
+import { AppError } from './appError';
 
-export class InternalError extends CustomError {
+export class InternalError extends AppError {
     constructor(message = INTERNAL_ERROR_MESSAGE, code = 500) {
-        super(message);
-        this.code = code;
+        super(message, code);
         this.name = this.constructor.name;
         Error.captureStackTrace(this, this.constructor);
     }

@@ -1,6 +1,5 @@
-import { CustomError } from '@src/errors/customError';
+import { AppError } from '@src/errors/appError';
 import { InternalError } from '@src/errors/internalError';
-import { InsertUserError } from '@src/errors/repositories/user/insertUserError';
 import { User, UserData, UserModel } from '@src/models/user';
 import { log } from '@src/util/logger';
 
@@ -11,12 +10,12 @@ export class UserRepository {
             const user = new this.model({ ...data });
 
             if (!user.isNew) {
-                throw new InsertUserError('Usuário já cadastrado!', 409);
+                throw new AppError('Usuário já cadastrado!', 409);
             }
 
             return user.save();
         } catch (error) {
-            if (error instanceof CustomError) throw error;
+            if (error instanceof AppError) throw error;
             log.error(error);
             throw new InternalError('Erro ao salvar o usuário!');
         }

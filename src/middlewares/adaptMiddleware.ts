@@ -1,4 +1,4 @@
-import { CustomError } from '@src/errors/customError';
+import { AppError } from '@src/errors/appError';
 import { httpInternalErrorResponse, httpResponse } from '@src/util/http';
 import {
     NextFunction,
@@ -17,7 +17,7 @@ export function adaptMiddleware(middleware: Middleware): any {
             await middleware.exec(req);
             return next();
         } catch (error) {
-            if (error instanceof CustomError) {
+            if (error instanceof AppError) {
                 return httpResponse({
                     response: res,
                     status: error.code,
