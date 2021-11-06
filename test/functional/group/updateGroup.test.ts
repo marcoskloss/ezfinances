@@ -49,4 +49,18 @@ describe('PUT /groups', () => {
         expect(updatedGroup).toBeDefined();
         expect(response.status).toBe(200);
     });
+
+    it('should return 401 if authorization token is not provided', async () => {
+        const options = {
+            method: Methods.put,
+        };
+
+        const groupData = {
+            id: group.id,
+            title: 'newest title',
+        };
+
+        const response = await doRequest('/groups', groupData, options);
+        expect(response.status).toBe(401);
+    });
 });
