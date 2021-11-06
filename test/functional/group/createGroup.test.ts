@@ -6,6 +6,8 @@ import { doRequest, Methods } from '../../util/doRequest';
 describe('POST /groups', () => {
     let user: UserModel;
     beforeAll(async () => {
+        await Group.deleteMany({});
+
         user = new User({
             name: 'username',
             email: 'user@email.com',
@@ -43,4 +45,7 @@ describe('POST /groups', () => {
         expect(response.status).toBe(201);
         expect(group).toBeDefined();
     });
+
+    it.todo('should return 401 if authorization token is not provided');
+    it.todo('should return 422 if invalid body schema is provided');
 });

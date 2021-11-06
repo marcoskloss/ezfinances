@@ -6,6 +6,9 @@ describe('/users/create', () => {
     afterEach(async () => {
         await User.deleteMany({});
     });
+    beforeAll(async () => {
+        await User.deleteMany({});
+    });
 
     describe('When creating a new user', () => {
         const userData = {

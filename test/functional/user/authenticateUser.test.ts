@@ -5,6 +5,9 @@ describe('/users/authenticate', () => {
     beforeEach(async () => {
         await User.deleteMany({});
     });
+    afterAll(async () => {
+        await User.deleteMany({});
+    });
 
     describe('When authenticating a user', () => {
         const userData = {
