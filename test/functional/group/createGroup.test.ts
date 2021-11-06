@@ -60,5 +60,24 @@ describe('POST /groups', () => {
         const response = await doRequest('/groups', { ...groupData }, options);
         expect(response.status).toBe(401);
     });
-    it.todo('should return 422 if invalid body schema is provided');
+
+    it('should return 422 if invalid body schema is provided', async () => {
+        const token = AuthService.generateToken(user.id);
+
+        const options = {
+            method: Methods.post,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        const groupData = {
+            active: true,
+            user: user.id,
+        };
+
+        const response = await doRequest('/groups', { ...groupData }, options);
+
+        expect(response.status).toBe(422);
+    });
 });
