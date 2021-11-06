@@ -3,7 +3,7 @@ import { AuthService } from '@src/services/auth';
 import { Methods, doRequest } from '../../util/doRequest';
 
 describe('/users/create', () => {
-    beforeEach(async () => {
+    afterEach(async () => {
         await User.deleteMany({});
     });
 
