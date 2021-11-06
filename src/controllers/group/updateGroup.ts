@@ -15,8 +15,7 @@ export class UpdateGroupController implements Controller {
             _id: req.body.id,
         };
 
-        await Group.findOneAndUpdate(where, req.body);
-
+        await Group.updateOne(where, req.body);
         return { status: 200 };
     }
 }
