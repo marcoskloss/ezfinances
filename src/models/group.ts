@@ -10,7 +10,7 @@ export interface GroupData {
 const schema = new mongoose.Schema(
     {
         title: { type: String, required: true, maxLength: 20 },
-        active: { type: Boolean, required: true, default: true },
+        active: { type: Boolean, default: true },
         user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     },
     {
