@@ -32,6 +32,10 @@ export class Server {
         this.app.use(this.routeLogger);
 
         this.app.use(routes);
+
+        this.app.use((_, res) => {
+            res.status(404).end();
+        });
     }
 
     private setupErrorHandler(): void {
