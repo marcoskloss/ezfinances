@@ -1,3 +1,4 @@
+import { isValidObjectId, Error } from 'mongoose';
 import { Middleware } from '@src/middlewares/contract';
 import { Request } from '@src/util/http';
 import { Group } from '@src/models/group';
@@ -8,6 +9,8 @@ import { InternalError } from '@src/errors/internalError';
 export class UpdateGroupValidator implements Middleware {
     async exec(req: Request): Promise<void> {
         try {
+            isValidObjectId(req.body.id);
+
             const group = await Group.findOne({
                 _id: req.body.id,
                 user: req.userId,
@@ -17,6 +20,10 @@ export class UpdateGroupValidator implements Middleware {
                 throw new AppError('Grupo não encontrado!', 400);
             }
         } catch (error) {
+            if (error instanceof Error.CastError) {
+                throw new AppError('Grupo não encontrado!', 400);
+            }
+
             if (error instanceof AppError) {
                 throw error;
             }
