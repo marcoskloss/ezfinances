@@ -46,6 +46,19 @@ describe('POST /groups', () => {
         expect(group).toBeDefined();
     });
 
-    it.todo('should return 401 if authorization token is not provided');
+    it('should return 401 if authorization token is not provided', async () => {
+        const options = {
+            method: Methods.post,
+        };
+
+        const groupData: GroupData = {
+            active: true,
+            title: 'My New Group',
+            user: user.id,
+        };
+
+        const response = await doRequest('/groups', { ...groupData }, options);
+        expect(response.status).toBe(401);
+    });
     it.todo('should return 422 if invalid body schema is provided');
 });
