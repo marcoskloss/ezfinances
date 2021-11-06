@@ -1,5 +1,6 @@
 import { Group, GroupData } from '@src/models/group';
 import { User, UserModel } from '@src/models/user';
+import { AuthService } from '@src/services/auth';
 import { doRequest, Methods } from '../../util/doRequest';
 
 describe('POST /groups', () => {
@@ -21,8 +22,13 @@ describe('POST /groups', () => {
     });
 
     it('should create a new group and return 201', async () => {
+        const token = AuthService.generateToken(user.id);
+
         const options = {
             method: Methods.post,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         };
 
         const groupData: GroupData = {
