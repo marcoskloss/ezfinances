@@ -63,4 +63,22 @@ describe('PUT /groups', () => {
         const response = await doRequest('/groups', groupData, options);
         expect(response.status).toBe(401);
     });
+
+    it('should return 400 if the group to be updated doesnt exist', async () => {
+        const token = AuthService.generateToken(user.id);
+
+        const options = {
+            method: Methods.put,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        const groupData = {
+            id: 'invalid-id',
+            title: 'newest title',
+        };
+        const response = await doRequest('/groups', groupData, options);
+        expect(response.status).toBe(400);
+    });
 });
