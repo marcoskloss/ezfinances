@@ -17,12 +17,10 @@ export function httpResponse({
     data,
     error,
 }: httpResponse): ExpressResponse {
-    const responseData = data ? { ...data } : {};
-
     return response.status(status).json({
         error: error,
         status,
-        ...responseData,
+        data,
     });
 }
 
