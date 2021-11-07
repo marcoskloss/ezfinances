@@ -7,6 +7,8 @@ import { AuthMiddleware } from '@src/middlewares/auth';
 import { CreateGroupValidator } from '@src/middlewares/validators/group/createGroupValidator';
 import { UpdateGroupValidator } from '@src/middlewares/validators/group/updateGroupValidator';
 import { ListGroupsController } from '@src/controllers/group/listGroup';
+import { ShowGroupValidator } from '@src/middlewares/validators/group/showGroupValidator';
+import { ShowGroupController } from '@src/controllers/group/showGroup';
 
 const groupRoute = Router();
 
@@ -28,6 +30,13 @@ groupRoute.get(
     '/',
     adaptMiddleware(new AuthMiddleware()),
     adaptController(new ListGroupsController())
+);
+
+groupRoute.get(
+    '/:groupId',
+    adaptMiddleware(new AuthMiddleware()),
+    adaptMiddleware(new ShowGroupValidator()),
+    adaptController(new ShowGroupController())
 );
 
 export { groupRoute };
