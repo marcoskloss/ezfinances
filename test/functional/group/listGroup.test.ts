@@ -46,4 +46,10 @@ describe('GET /groups', () => {
             ])
         );
     });
+
+    it('should return 401 if authorization token is not provided', async () => {
+        const options = { method: Methods.get };
+        const response = await doRequest('/groups', {}, options);
+        expect(response.status).toBe(401);
+    });
 });
