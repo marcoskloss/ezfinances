@@ -28,9 +28,9 @@ describe('/users/me', () => {
         const response = await doRequest('/users/me', {}, options);
 
         expect(response.status).toBe(200);
-        expect(response.name).toBe(user.name);
-        expect(response.email).toBe(user.email);
-        expect(response.id).toBe(user.id);
+        expect(response.data.name).toBe(user.name);
+        expect(response.data.email).toBe(user.email);
+        expect(response.data.id).toBe(user.id);
     });
 
     test('if authorization header is invalid it should return 401', async () => {

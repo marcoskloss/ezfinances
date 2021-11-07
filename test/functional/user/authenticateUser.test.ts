@@ -32,7 +32,7 @@ describe('/users/authenticate', () => {
                 options
             );
 
-            expect(response).toEqual(
+            expect(response.data).toEqual(
                 expect.objectContaining({ token: expect.any(String) })
             );
         });
