@@ -61,5 +61,16 @@ describe('GET /groups/:groupId', () => {
         expect(response.status).toBe(400);
     });
 
-    it.todo('should return 401 if no authorization token is provided');
+    it('should return 401 if no authorization token is provided', async () => {
+        const options = { method: Methods.get };
+
+        const groupModel = await new Group({
+            title: 'My Group',
+            user: user.id,
+        }).save();
+        const group = groupModel.toJSON();
+
+        const response = await doRequest(`/groups/${group.id}`, {}, options);
+        expect(response.status).toBe(401);
+    });
 });
