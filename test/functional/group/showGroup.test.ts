@@ -48,6 +48,18 @@ describe('GET /groups/:groupId', () => {
         );
     });
 
-    it.todo('should return 400 if the given id is invalid objectId');
+    it('should return 400 if the given id is invalid objectId', async () => {
+        const token = AuthService.generateToken(user.id);
+        const options = {
+            method: Methods.get,
+            headers: {
+                Authorization: 'Bearer ' + token,
+            },
+        };
+
+        const response = await doRequest('/groups/fake-id', {}, options);
+        expect(response.status).toBe(400);
+    });
+
     it.todo('should return 401 if no authorization token is provided');
 });
