@@ -1,6 +1,7 @@
 import { AppError } from '@src/errors/appError';
 import { Group } from '@src/models/group';
 import { Transaction } from '@src/models/transaction';
+import { log } from '@src/util/logger';
 
 export interface DeleteGroupParams {
     groupId: string;
@@ -25,6 +26,7 @@ export class DeleteGroupService {
         } catch (error) {
             if (error instanceof AppError) throw error;
 
+            log.error(error);
             throw new AppError('Erro ao excluir o grupo!', 500);
         }
     }
