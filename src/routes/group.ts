@@ -9,34 +9,42 @@ import { UpdateGroupValidator } from '@src/middlewares/validators/group/updateGr
 import { ListGroupsController } from '@src/controllers/group/listGroup';
 import { ShowGroupValidator } from '@src/middlewares/validators/group/showGroupValidator';
 import { ShowGroupController } from '@src/controllers/group/showGroup';
+import { DeleteGroupController } from '@src/controllers/group/deleteGroup';
 
 const groupRoute = Router();
+const authMiddleware = new AuthMiddleware();
 
 groupRoute.post(
     '/',
-    adaptMiddleware(new AuthMiddleware()),
+    adaptMiddleware(authMiddleware),
     adaptMiddleware(new CreateGroupValidator()),
     adaptController(new CreateGroupController())
 );
 
 groupRoute.put(
     '/',
-    adaptMiddleware(new AuthMiddleware()),
+    adaptMiddleware(authMiddleware),
     adaptMiddleware(new UpdateGroupValidator()),
     adaptController(new UpdateGroupController())
 );
 
 groupRoute.get(
     '/',
-    adaptMiddleware(new AuthMiddleware()),
+    adaptMiddleware(authMiddleware),
     adaptController(new ListGroupsController())
 );
 
 groupRoute.get(
     '/:groupId',
-    adaptMiddleware(new AuthMiddleware()),
+    adaptMiddleware(authMiddleware),
     adaptMiddleware(new ShowGroupValidator()),
     adaptController(new ShowGroupController())
+);
+
+groupRoute.delete(
+    '/:groupId',
+    adaptMiddleware(authMiddleware),
+    adaptController(new DeleteGroupController())
 );
 
 export { groupRoute };
