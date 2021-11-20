@@ -10,7 +10,7 @@ export interface DeleteGroupParams {
 export class DeleteGroupService {
     public async exec({ groupId }: DeleteGroupParams): Promise<string> {
         try {
-            const hasAssociatedTransactions = await Transaction.count({
+            const hasAssociatedTransactions = await Transaction.countDocuments({
                 group: groupId,
             });
 
