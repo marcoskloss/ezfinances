@@ -79,4 +79,13 @@ describe('DELETE /groups', () => {
         expect(response.status).toBe(400);
         await expect(Group.findById(group.id)).resolves.toBeTruthy();
     });
+
+    it('should return 401 if authorization token is not provided', async () => {
+        const options = {
+            method: Methods.delete,
+        };
+
+        const response = await doRequest('/groups/some_id', {}, options);
+        expect(response.status).toBe(401);
+    });
 });
