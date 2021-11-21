@@ -1,9 +1,5 @@
 import { adaptController } from '@src/controllers/adaptController';
-import { CreateTransactionController } from '@src/controllers/transaction/createTransaction';
-import { DeleteTransactionController } from '@src/controllers/transaction/deleteTransaction';
-import { ListTransactionsController } from '@src/controllers/transaction/listTransactions';
-import { ShowTransactionController } from '@src/controllers/transaction/showTransaction';
-import { UpdateTransactionController } from '@src/controllers/transaction/updateTransaction';
+import * as Transaction from '@src/controllers/transaction';
 import { adaptMiddleware } from '@src/middlewares/adaptMiddleware';
 import { AuthMiddleware } from '@src/middlewares/auth';
 import { CreateTransactionValidator } from '@src/middlewares/validators/transaction/createTransactionValidator';
@@ -18,33 +14,33 @@ transactionRoute.post(
     '/',
     adaptMiddleware(authMiddleware),
     adaptMiddleware(new CreateTransactionValidator()),
-    adaptController(new CreateTransactionController())
+    adaptController(new Transaction.CreateTransactionController())
 );
 
 transactionRoute.put(
     '/:transactionId',
     adaptMiddleware(authMiddleware),
     adaptMiddleware(new UpdateTransactionValidator()),
-    adaptController(new UpdateTransactionController())
+    adaptController(new Transaction.UpdateTransactionController())
 );
 
 transactionRoute.get(
     '/',
     adaptMiddleware(authMiddleware),
-    adaptController(new ListTransactionsController())
+    adaptController(new Transaction.ListTransactionsController())
 );
 
 transactionRoute.get(
     '/:transactionId',
     adaptMiddleware(authMiddleware),
     adaptMiddleware(new ShowTransactionValidator()),
-    adaptController(new ShowTransactionController())
+    adaptController(new Transaction.ShowTransactionController())
 );
 
 transactionRoute.delete(
     '/:transactionId',
     adaptMiddleware(authMiddleware),
-    adaptController(new DeleteTransactionController())
+    adaptController(new Transaction.DeleteTransactionController())
 );
 
 export { transactionRoute };
