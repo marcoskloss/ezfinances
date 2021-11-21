@@ -1,4 +1,4 @@
-import { CreateUserValidator } from '../user/createUserValidator';
+import { CreateUserValidator } from '@src/middlewares/validators/user/createUserValidator';
 
 describe('createUserValidator', () => {
     const body = {

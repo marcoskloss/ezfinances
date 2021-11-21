@@ -1,4 +1,4 @@
-import { CreateGroupValidator } from '../group/createGroupValidator';
+import { CreateGroupValidator } from '@src/middlewares/validators/group/createGroupValidator';
 
 describe('createGroupValidator', () => {
     it('should throw if title is not provided', async () => {

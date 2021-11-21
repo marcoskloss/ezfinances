@@ -1,5 +1,5 @@
 import { Group } from '@src/models/group';
-import { UpdateGroupValidator } from '../group/updateGroupValidator';
+import { UpdateGroupValidator } from '@src/middlewares/validators/group/updateGroupValidator';
 
 jest.mock('@src/models/group');
 
@@ -9,7 +9,7 @@ describe('upateGroupValidator', () => {
         mockedGroup.findOne.mockResolvedValueOnce(null);
 
         const req: any = {
-            body: {},
+            params: { transactionId: 'foo' },
         };
 
         const updateGroupValidator = new UpdateGroupValidator();

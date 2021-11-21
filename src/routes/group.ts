@@ -22,7 +22,7 @@ groupRoute.post(
 );
 
 groupRoute.put(
-    '/',
+    '/:groupId',
     adaptMiddleware(authMiddleware),
     adaptMiddleware(new UpdateGroupValidator()),
     adaptController(new UpdateGroupController())

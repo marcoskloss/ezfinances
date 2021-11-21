@@ -1,13 +1,13 @@
-import { Group, GroupModel } from '@src/models/group';
+import { Transaction, TransactionModel } from '@src/models/transaction';
 import { User, UserModel } from '@src/models/user';
 import { AuthService } from '@src/services/auth';
 import { Methods, doRequest } from '../../util/doRequest';
 
-describe('PUT /groups', () => {
+describe('PUT /transactions', () => {
     let user: UserModel;
-    let group: GroupModel;
+    let transaction: TransactionModel;
     beforeAll(async () => {
-        await Group.deleteMany({});
+        await Transaction.deleteMany({});
 
         user = new User({
             name: 'username',
@@ -16,19 +16,20 @@ describe('PUT /groups', () => {
         });
         await user.save();
 
-        group = new Group({
-            active: true,
-            title: 'My New Group',
+        transaction = new Transaction({
+            amount: 100,
+            title: 'my new transaction',
+            date: new Date(),
             user: user.id,
         });
-        await group.save();
+        await transaction.save();
     });
 
     afterAll(async () => {
         await User.deleteMany({});
     });
 
-    it('should update a group and return 200', async () => {
+    it('should update a transaction and return 200', async () => {
         const token = AuthService.generateToken(user.id);
 
         const options = {
@@ -38,18 +39,20 @@ describe('PUT /groups', () => {
             },
         };
 
-        const groupData = {
+        const transactionData = {
             title: 'new title',
         };
 
         const response = await doRequest(
-            `/groups/${group.id}`,
-            { ...groupData },
+            `/transactions/${transaction.id}`,
+            { ...transactionData },
             options
         );
-        const updatedGroup = await Group.findOne({ title: 'new title' });
+        const updatedTransaction = await Transaction.findOne({
+            title: 'new title',
+        });
 
-        expect(updatedGroup).toBeDefined();
+        expect(updatedTransaction).toBeDefined();
         expect(response.status).toBe(200);
     });
 
@@ -58,19 +61,19 @@ describe('PUT /groups', () => {
             method: Methods.put,
         };
 
-        const groupData = {
+        const transactionData = {
             title: 'newest title',
         };
 
         const response = await doRequest(
-            `/groups/${group.id}`,
-            groupData,
+            `/transactions/${transaction.id}`,
+            transactionData,
             options
         );
         expect(response.status).toBe(401);
     });
 
-    it('should return 400 if the group to be updated doesnt exist', async () => {
+    it('should return 400 if the transaction to be updated doesnt exist', async () => {
         const token = AuthService.generateToken(user.id);
 
         const options = {
@@ -80,10 +83,14 @@ describe('PUT /groups', () => {
             },
         };
 
-        const groupData = {
+        const transactionData = {
             title: 'newest title',
         };
-        const response = await doRequest('/groups/some_id', groupData, options);
+        const response = await doRequest(
+            '/transactions/some_id',
+            transactionData,
+            options
+        );
         expect(response.status).toBe(400);
     });
 });

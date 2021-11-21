@@ -1,27 +1,27 @@
 import { isValidObjectId, Error } from 'mongoose';
 import { Middleware } from '@src/middlewares/contract';
 import { Request } from '@src/util/http';
-import { Group } from '@src/models/group';
+import { Transaction } from '@src/models/transaction';
 import { AppError } from '@src/errors/appError';
 import { log } from '@src/util/logger';
 import { InternalError } from '@src/errors/internalError';
 
-export class UpdateGroupValidator implements Middleware {
+export class UpdateTransactionValidator implements Middleware {
     async exec(req: Request): Promise<void> {
         try {
-            isValidObjectId(req.params.groupId);
+            isValidObjectId(req.params.transactionId);
 
-            const group = await Group.findOne({
-                _id: req.params.groupId,
+            const transaction = await Transaction.findOne({
+                _id: req.params.transactionId,
                 user: req.userId,
             });
 
-            if (!group) {
-                throw new AppError('Grupo não encontrado!', 400);
+            if (!transaction) {
+                throw new AppError('Transação não encontrada!', 400);
             }
         } catch (error) {
             if (error instanceof Error.CastError) {
-                throw new AppError('Grupo não encontrado!', 400);
+                throw new AppError('Transação não encontrada!', 400);
             }
 
             if (error instanceof AppError) {

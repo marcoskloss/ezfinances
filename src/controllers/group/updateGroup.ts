@@ -12,7 +12,7 @@ export class UpdateGroupController implements Controller {
     ): Promise<Response> {
         const where = {
             user: req.userId,
-            _id: req.body.id,
+            _id: req.params.groupId,
         };
 
         await Group.updateOne(where, req.body);
