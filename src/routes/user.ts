@@ -1,28 +1,26 @@
 import { Router } from 'express';
-import { CreateUserController } from '@src/controllers/user/createUser';
-import { AuthenticateUserController } from '@src/controllers/user/authenticateUser';
+import * as User from '@src/controllers/user';
 import { adaptController } from '@src/controllers/adaptController';
 import { adaptMiddleware } from '@src/middlewares/adaptMiddleware';
 import { CreateUserValidator } from '@src/middlewares/validators/user/createUserValidator';
 import { AuthMiddleware } from '@src/middlewares/auth';
-import { GetUserProfileController } from '@src/controllers/user/getUserProfile';
 
 const userRoute = Router();
 
 userRoute.post(
     '/create',
     adaptMiddleware(new CreateUserValidator()),
-    adaptController(new CreateUserController())
+    adaptController(new User.CreateUserController())
 );
 userRoute.post(
     '/authenticate',
-    adaptController(new AuthenticateUserController())
+    adaptController(new User.AuthenticateUserController())
 );
 
 userRoute.get(
     '/me',
     adaptMiddleware(new AuthMiddleware()),
-    adaptController(new GetUserProfileController())
+    adaptController(new User.GetUserProfileController())
 );
 
 export { userRoute };
